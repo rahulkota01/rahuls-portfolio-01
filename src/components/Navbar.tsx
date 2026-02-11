@@ -50,7 +50,15 @@ const Navbar = () => {
         </div>
 
         {/* Mobile toggle */}
-        <div className="flex items-center gap-3 md:hidden">
+        <div className="flex items-center gap-2 md:hidden">
+          <a
+            href={portfolioData.personal.resumeUrl}
+            download
+            className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-blue-500 text-white text-xs font-medium hover:bg-blue-600 transition-colors"
+          >
+            <FileText size={14} />
+            Resume
+          </a>
           <ThemeToggle />
           <button
             onClick={() => setOpen(!open)}
@@ -84,15 +92,6 @@ const Navbar = () => {
             <ThemeToggle />
             <span className="text-xs text-muted-foreground">Toggle theme</span>
           </div>
-          <a
-            href={portfolioData.personal.resumeUrl}
-            download
-            onClick={() => setOpen(false)}
-            className="flex items-center gap-2 px-4 py-2 rounded-lg bg-blue-500 text-white text-sm font-medium hover:bg-blue-600 transition-colors w-fit"
-          >
-            <FileText size={16} />
-            Resume
-          </a>
         </div>
       </div>
     </nav>
