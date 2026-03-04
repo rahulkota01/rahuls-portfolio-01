@@ -15,7 +15,7 @@ export function ThemeProvider({ children, defaultTheme = "light" }: { children: 
     if (typeof window !== "undefined") {
       const saved = localStorage.getItem("theme") as Theme;
       if (saved) return saved;
-      return window.matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : defaultTheme;
+      return "light";
     }
     return defaultTheme;
   });
