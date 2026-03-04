@@ -4,9 +4,10 @@ interface AnimatedTextProps {
   words: string[];
   className?: string;
   speed?: number;
+  onWordChange?: (index: number) => void;
 }
 
-const AnimatedText = ({ words, className = "", speed = 1200 }: AnimatedTextProps) => {
+const AnimatedText = ({ words, className = "", speed = 1200, onWordChange }: AnimatedTextProps) => {
   const [currentWordIndex, setCurrentWordIndex] = useState(0);
   const [displayText, setDisplayText] = useState(words[0]);
   const [isDeleting, setIsDeleting] = useState(false);
@@ -27,7 +28,9 @@ const AnimatedText = ({ words, className = "", speed = 1200 }: AnimatedTextProps
       }
     } else if (displayText === "") {
       setIsDeleting(false);
-      setCurrentWordIndex((prev) => (prev + 1) % words.length);
+      const nextIndex = (currentWordIndex + 1) % words.length;
+      setCurrentWordIndex(nextIndex);
+      onWordChange?.(nextIndex);
       setTypingSpeed(80);
     } else {
       timer = setTimeout(() => {

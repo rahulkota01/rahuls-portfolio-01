@@ -8,7 +8,7 @@ export const portfolioData = {
     name: "Rahul Kota",
     tagline: "Pharm.D Student | AI/ML for Healthcare & Biomedical Research",
     mission:
-      "PharmD student with an interdisciplinary research interest spanning healthcare, biomedical signalling, cancer biology, & computational approaches. Actively building research and technical skills through academic projects, review writing, and foundational programming.",
+      "PharmD researcher and Founder of RO Ecosystem, operating at the intersection of clinical medicine, biomedical signaling networks, oncology, and domain-specialized artificial intelligence. Focused on architecting research-grade computational systems that translate biological complexity into structured, machine-interpretable intelligence.",
     email: "rahulkota0101@gmail.com",
     phone: "+91 9502313528",
     location: "Vijayawada, Andhra Pradesh, India",

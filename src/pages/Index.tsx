@@ -1,3 +1,4 @@
+import { useState } from "react";
 import Navbar from "@/components/Navbar";
 import HeroSection from "@/components/HeroSection";
 import AboutSection from "@/components/AboutSection";
@@ -11,25 +12,31 @@ import TimelineSection from "@/components/TimelineSection";
 import VisionSection from "@/components/VisionSection";
 import ContactSection from "@/components/ContactSection";
 import Footer from "@/components/Footer";
+import FounderModal from "@/components/FounderModal";
 
-const Index = () => (
-  <div className="w-screen bg-background overflow-x-hidden">
-    <Navbar />
-    <main className="pt-16">
-      <HeroSection />
-      <AboutSection />
-      <ResearchSection />
-      <ResearchExposureSection />
-      <PublicationsSection />
-      <ProjectsSection />
-      <SkillsSection />
-      <CertificatesSection />
-      <TimelineSection />
-      <VisionSection />
-      <ContactSection />
-    </main>
-    <Footer />
-  </div>
-);
+const Index = () => {
+  const [founderOpen, setFounderOpen] = useState(false);
+
+  return (
+    <div className="w-screen bg-background overflow-x-hidden">
+      <Navbar onFounderClick={() => setFounderOpen(true)} />
+      <main className="pt-16">
+        <HeroSection onFounderClick={() => setFounderOpen(true)} />
+        <AboutSection />
+        <ResearchSection />
+        <ResearchExposureSection />
+        <PublicationsSection />
+        <ProjectsSection />
+        <SkillsSection />
+        <CertificatesSection />
+        <TimelineSection />
+        <VisionSection />
+        <ContactSection />
+      </main>
+      <Footer />
+      <FounderModal open={founderOpen} onOpenChange={setFounderOpen} />
+    </div>
+  );
+};
 
 export default Index;

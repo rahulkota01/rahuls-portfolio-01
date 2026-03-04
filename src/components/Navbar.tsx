@@ -1,6 +1,6 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { cn } from "@/lib/utils";
-import { Menu, X, FileText } from "lucide-react";
+import { Menu, X, FileText, Sparkles } from "lucide-react";
 import { portfolioData } from "@/data/portfolio-data";
 import ThemeToggle from "./ThemeToggle";
 
@@ -15,8 +15,32 @@ const navItems = [
   { label: "Contact", href: "#contact" },
 ];
 
-const Navbar = () => {
+interface NavbarProps {
+  onFounderClick: () => void;
+}
+
+const Navbar = ({ onFounderClick }: NavbarProps) => {
   const [open, setOpen] = useState(false);
+  const [activeSection, setActiveSection] = useState("");
+
+  useEffect(() => {
+    const handleScroll = () => {
+      const sections = navItems.map(item => item.href.replace("#", ""));
+      const scrollPosition = window.scrollY + 100;
+
+      for (let i = sections.length - 1; i >= 0; i--) {
+        const element = document.getElementById(sections[i]);
+        if (element && element.offsetTop <= scrollPosition) {
+          setActiveSection(sections[i]);
+          break;
+        }
+      }
+    };
+
+    window.addEventListener("scroll", handleScroll, { passive: true });
+    handleScroll();
+    return () => window.removeEventListener("scroll", handleScroll);
+  }, []);
 
   return (
     <nav className="fixed top-0 left-0 right-0 z-50 nav-glass">
@@ -31,11 +55,26 @@ const Navbar = () => {
             <a
               key={item.href}
               href={item.href}
-              className="text-sm text-muted-foreground hover:text-foreground transition-colors duration-300"
+              className={cn(
+                "text-sm transition-colors duration-300 relative",
+                activeSection === item.href.replace("#", "")
+                  ? "text-foreground font-medium"
+                  : "text-muted-foreground hover:text-foreground"
+              )}
             >
               {item.label}
+              {activeSection === item.href.replace("#", "") && (
+                <span className="absolute -bottom-1 left-0 right-0 h-0.5 bg-blue-500 rounded-full" />
+              )}
             </a>
           ))}
+          <button
+            onClick={onFounderClick}
+            className="text-sm text-blue-600 hover:text-blue-700 font-medium transition-colors duration-300 flex items-center gap-1"
+          >
+            <Sparkles className="w-3.5 h-3.5" />
+            Founder
+          </button>
           <div className="flex items-center gap-3 pl-4 border-l border-border/30">
             <ThemeToggle />
             <a
@@ -74,7 +113,7 @@ const Navbar = () => {
       <div
         className={cn(
           "md:hidden overflow-hidden transition-all duration-300 nav-glass",
-          open ? "max-h-96 border-t border-border/30" : "max-h-0"
+          open ? "max-h-[500px] border-t border-border/30" : "max-h-0"
         )}
       >
         <div className="px-6 py-4 flex flex-col gap-4">
@@ -83,11 +122,26 @@ const Navbar = () => {
               key={item.href}
               href={item.href}
               onClick={() => setOpen(false)}
-              className="text-sm text-muted-foreground hover:text-foreground transition-colors"
+              className={cn(
+                "text-sm transition-colors",
+                activeSection === item.href.replace("#", "")
+                  ? "text-foreground font-medium"
+                  : "text-muted-foreground hover:text-foreground"
+              )}
             >
               {item.label}
             </a>
           ))}
+          <button
+            onClick={() => {
+              setOpen(false);
+              onFounderClick();
+            }}
+            className="text-sm text-blue-600 hover:text-blue-700 font-medium transition-colors flex items-center gap-1 text-left"
+          >
+            <Sparkles className="w-3.5 h-3.5" />
+            Founder
+          </button>
           <div className="flex items-center gap-3 pt-2 border-t border-border/30">
             <ThemeToggle />
             <span className="text-xs text-muted-foreground">Toggle theme</span>

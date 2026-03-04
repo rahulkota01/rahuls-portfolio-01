@@ -2,15 +2,25 @@ import { portfolioData } from "@/data/portfolio-data";
 import { ArrowDown, FileText, Mail } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import AnimatedText from "./AnimatedText";
-const HeroSection = () => {
+import { useState } from "react";
+
+interface HeroSectionProps {
+  onFounderClick: () => void;
+}
+
+const HeroSection = ({ onFounderClick }: HeroSectionProps) => {
   const { personal } = portfolioData;
+  const [currentPortal, setCurrentPortal] = useState("Founder & CEO");
+
   const animatedPhrases = [
-    "PharmD Student",
-    "AI/ML Researcher",
-    "Healthcare Innovator",
-    "Computational Biologist",
-    "Cancer Biology Researcher",
-    "CRISPR Data Analysis Enthusiast",
+    { text: "Founder & CEO — RO Ecosystem", portal: "Founder & CEO" },
+    { text: "Entrepreneur", portal: "Entrepreneur" },
+    { text: "PharmD Student", portal: "PharmD Student" },
+    { text: "AI/ML Researcher", portal: "AI/ML Researcher" },
+    { text: "Healthcare Innovator", portal: "Healthcare Innovator" },
+    { text: "Computational Biologist", portal: "Computational Biologist" },
+    { text: "Cancer Biology Researcher", portal: "Cancer Biology Researcher" },
+    { text: "CRISPR Data Analysis Enthusiast", portal: "CRISPR Enthusiast" },
   ];
   return (
     <section className="relative min-h-[calc(100vh-4rem)] flex items-center justify-center hero-bg overflow-hidden">
@@ -54,10 +64,36 @@ const HeroSection = () => {
 
         {/* Animated title with enhanced styling */}
         <div className="mt-4 animate-fade-up-smooth" style={{ animationDelay: "0.15s" }}>
-          <span className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-blue-50 border border-blue-200">
+          <button
+            onClick={onFounderClick}
+            className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-blue-50 border border-blue-200 hover:bg-blue-100 hover:border-blue-300 transition-all duration-300 cursor-pointer group"
+          >
             <span className="w-2 h-2 rounded-full bg-green-500 animate-pulse" />
-            <AnimatedText words={animatedPhrases} speed={1200} />
-          </span>
+            <AnimatedText 
+              words={animatedPhrases.map(p => p.text)} 
+              speed={1200}
+              onWordChange={(index) => setCurrentPortal(animatedPhrases[index]?.portal || "")}
+            />
+          </button>
+        </div>
+
+        {/* Portal Indicator Bar */}
+        <div className="mt-3 animate-fade-up-smooth" style={{ animationDelay: "0.2s" }}>
+          <div className="flex items-center justify-center gap-1">
+            {animatedPhrases.map((phrase, index) => (
+              <div
+                key={phrase.portal}
+                className={`h-1 rounded-full transition-all duration-500 ${
+                  currentPortal === phrase.portal 
+                    ? "w-8 bg-blue-500" 
+                    : "w-2 bg-blue-200"
+                }`}
+              />
+            ))}
+          </div>
+          <p className="text-xs text-muted-foreground mt-2 text-center font-medium tracking-wide uppercase">
+            {currentPortal}
+          </p>
         </div>
 
         <p className="mt-6 text-muted-foreground max-w-2xl mx-auto leading-relaxed animate-fade-up-smooth" style={{ animationDelay: "0.3s" }}>
@@ -81,7 +117,7 @@ const HeroSection = () => {
 
         <a
           href="#about"
-          className="inline-block mt-16 text-muted-foreground hover:text-foreground transition-colors animate-fade-up-smooth animate-float-gentle"
+          className="inline-block mt-12 text-muted-foreground hover:text-foreground transition-colors animate-fade-up-smooth animate-float-gentle"
           style={{ animationDelay: "0.6s" }}
         >
           <ArrowDown size={20} className="animate-float-gentle" />
